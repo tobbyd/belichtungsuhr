@@ -4,6 +4,7 @@
 #include "lightSwitch.h"
 #include "myLCD.h"
 #include "timer.h"
+#include "beeper.h"
 
 #include <LiquidCrystal.h>
 
@@ -12,6 +13,7 @@
 #define PIN_JOYSTICK_ENTER 	2
 #define PIN_RESET 		4
 
+#define PIN_BUZZER 5
 ButtonHandler buttonHandler;
 
 //                BS  E  D4 D5  D6 D7
@@ -26,6 +28,7 @@ LightSwitch lightSwitch;
 
 BelState *states[NUMSTATES];
 Timer timer(states);
+Beeper beeper(PIN_BUZZER);
 
 
 void setup() {
@@ -42,8 +45,7 @@ void setup() {
   StateMachine::instance().execState();
 }
 
-void loop() {
-  
+void loop() { 
 	BelButton currentButton = buttonHandler.readButton();
 
   if(currentButton == BelButton::BUTTON_UP) {

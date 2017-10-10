@@ -12,8 +12,8 @@ public:
 	void minus() const ;
 
 private:
-	m_PIN;
-}
+	int m_PIN;
+};
 
 #endif // _BEEPER_H
 
