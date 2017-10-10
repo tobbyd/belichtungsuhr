@@ -41,11 +41,11 @@ void Timer::check() {
 	if(m_isRunning) {
 		unsigned long refTime = millis();
 		if(refTime >= m_timeOutMillis) {
-			Serial.println(F("timer up"));
 			m_isRunning = false;
+			StateMachine::instance().setToState(m_callerState);
+			StateMachine::instance().execState();
 			m_states[m_callerState]->onTimerUp();
 		} else if (refTime >= m_nextUpdateMillis) {
-			Serial.println(F("timer update"));
 			m_nextUpdateMillis += 1000; // should not be modified after onTimerUpdate, because onTimerUpdate may set a new timer
 			m_states[m_callerState]->onTimerUpdate(m_timeOutMillis - m_nextUpdateMillis + 1000);
 		}

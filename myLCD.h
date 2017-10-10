@@ -14,6 +14,8 @@ public:
 	}
 
 	void init(const LiquidCrystal *lcd, const int backlightPIN);
+	void pause() const;
+	void play() const;
 	void printTitle(const char *title) const; // first row, max 16 chars
 	void printTitle(const __FlashStringHelper* title) const;
 	void printHints(const char *hints) const; // second row left, max 6 chars

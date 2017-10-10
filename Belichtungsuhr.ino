@@ -5,6 +5,7 @@
 #include "myLCD.h"
 #include "timer.h"
 #include "beeper.h"
+#include "chemieClock.h"
 
 #include <LiquidCrystal.h>
 
@@ -22,40 +23,52 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 #define PINBACKLIGHT 6
 
 LightSwitch lightSwitch;
+ChemieClock devClock("Dev", 60);
+ChemieClock fixClock("Fix", 90);
+
 
 #define STATE_LIGHTSWITCH 0
-#define NUMSTATES 1
+#define STATE_DEV 1
+#define STATE_FIX 2
+#define NUMSTATES 3
 
 BelState *states[NUMSTATES];
+
 Timer timer(states);
 Beeper beeper(PIN_BUZZER);
 
 
 void setup() {
-	buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET);
-	Serial.begin(9600);
-  lightSwitch.init(3);
   MyLCD::instance().init(&lcd, PINBACKLIGHT);
+  MyLCD::instance().printTitle(F("start Clock..."));
 
+  buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET);
+  Serial.begin(9600);
+  lightSwitch.init(3);
+  
   states[STATE_LIGHTSWITCH] = &lightSwitch;
+  states[STATE_DEV] = &devClock;
+  states[STATE_FIX] = &fixClock;
 
   StateMachine::instance().setStates(states);
-  StateMachine::instance().setToState(STATE_LIGHTSWITCH);
+  StateMachine::instance().setToState(STATE_DEV);
 
   StateMachine::instance().execState();
+  beeper.beepbeep();
 }
 
 void loop() { 
 	BelButton currentButton = buttonHandler.readButton();
 
   if(currentButton == BelButton::BUTTON_UP) {
-    Serial.println("Up");
+    StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + NUMSTATES - 1) % NUMSTATES);
   } else if(currentButton == BelButton::BUTTON_DOWN) {
-    Serial.println("Down");
+    StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + 1) % NUMSTATES);
   } else if(currentButton != BelButton::BUTTON_NONE) {
-    StateMachine::instance().getCurrentState()->onButtonClicked(currentButton);
-    
+    StateMachine::instance().getCurrentState()->onButtonClicked(currentButton); 
   }
+  StateMachine::instance().execState();
+  timer.check();
   
 }
 

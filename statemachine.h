@@ -31,6 +31,7 @@ public:
 	}
 	
 	void setToState(int stateNum) {
+		m_stateNum = stateNum;
 		m_nextState = m_states[stateNum];
 	}
 	void execState() {
@@ -42,10 +43,13 @@ public:
 	}
 
 	BelState *getCurrentState() { return m_currentState; }
+	int getCurrentStateNum() { return m_stateNum; }
 private:
 	StateMachine() : 
 		m_currentState(new DummyState()),
        		m_nextState(m_currentState) { }
+
+	int m_stateNum;
 	BelState *m_currentState;
 	BelState *m_nextState;
 

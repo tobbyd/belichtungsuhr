@@ -10,6 +10,9 @@ public:
 	void tock() const ;
 	void plus() const ;
 	void minus() const ;
+	void buzz() const ;
+	void beep() const ;
+	void beepbeep() const ;
 
 private:
 	int m_PIN;

@@ -3,6 +3,12 @@
 
 class BelState;
 
+enum class TimerRunningState {
+	RUNNING,
+	STOPPED,
+	PAUSED,
+};
+
 class Timer {
 public:
 	Timer(BelState *states[]);

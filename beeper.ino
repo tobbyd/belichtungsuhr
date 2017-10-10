@@ -7,6 +7,10 @@ Beeper::Beeper(const int PIN): m_PIN(PIN) {
 	pinMode(m_PIN, OUTPUT);
 }
 
+void Beeper::buzz() const {
+	tone(m_PIN, NOTE_A4, 100);
+}
+
 void Beeper::plus() const {
 	tone(m_PIN, NOTE_A5, 50);
 	delay(60); 
@@ -34,7 +38,17 @@ void Beeper::tick() const {
 }
 
 void Beeper::tock() const {
-	tone(m_PIN, NOTE_A4, 5);
-
+	tone(m_PIN, NOTE_A2, 5);
 }
+
+void Beeper::beep() const {
+	tone(m_PIN, NOTE_A6, 50);
+}
+
+void Beeper::beepbeep() const {
+	beep();
+	delay(100);
+	beep();
+}
+
 

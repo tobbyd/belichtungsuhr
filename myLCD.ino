@@ -6,6 +6,27 @@
 void MyLCD::init(const LiquidCrystal *lcd, const int backlightPIN) {
 	m_lcd = lcd;
 	m_backlightPIN = backlightPIN;
+	byte play[8] = {
+		B10000, 
+		B11000, 
+		B11100, 
+		B11110,
+		B11100,
+		B11000,
+		B10000,
+		B00000,};
+	byte pause[8] = {
+		B00000,
+		B11011,
+		B11011,
+		B11011,
+		B11011,
+		B11011,
+		B11011,
+		B00000,};
+	m_lcd->createChar(0, play);
+	m_lcd->createChar(1, pause);
+
 	m_lcd->begin(16, 2);
 	darkMode(true);
 }
@@ -31,6 +52,17 @@ void MyLCD::clearHints() const {
 	m_lcd->setCursor(0, 1);
 }
 
+void MyLCD::play() const {
+	clearHints();
+	m_lcd->setCursor(0, 1);
+	m_lcd->write(byte(0));
+}
+
+void MyLCD::pause() const {
+	clearHints();
+	m_lcd->setCursor(0, 1);
+	m_lcd->write(byte(1));
+}
 
 void MyLCD::printHints(const char *hints) const {
 	clearHints();
