@@ -1,0 +1,1 @@
+Belichtungsuhr für Vergrößerungen
