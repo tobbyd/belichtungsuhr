@@ -1,6 +1,9 @@
 #ifndef _ENLARGER_H
 #define _ENLARGER_H
 
+const char EnlargerOn[] PROGMEM = "0FF0F0FFFF0F";
+const char EnlargerOff[] PROGMEM = "0FF0F0FFFFF0";
+
 class Enlarger : public BelState {
 public:
 	Enlarger() { }
@@ -18,7 +21,7 @@ public:
 private:
 	void printMenu();
 	void printTime();
-	void printBase() {
+	void printBase();
 
 	void calcValues();
 	void writeTime(char *buffer, int size, int pot);

@@ -12,6 +12,14 @@ void Enlarger::init(RCSwitch *sender) {
 	calcValues();
 }
 
+void Enlarger::enlargerOn() {
+	m_sender->sendTriState(EnlargerOn);
+}
+
+void Enlarger::enlargerOff() {
+	m_sender->sendTriState(EnlargerOff);
+}
+
 void Enlarger::printMenu() {
 	MyLCD::instance().printTitle(F("Belichtung"));
 }
@@ -20,7 +28,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 	switch(button) {
 	case BelButton::BUTTON_INC:
 		if(m_state == TimerRunningState::STOPPED) {
-			if(m_currentPot < 6) {
+			if(m_currentPot < 30) {
 				m_currentPot++;
 				printTime();
 			} else {
@@ -30,7 +38,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 		break;
 	case BelButton::BUTTON_DEC:
 		if(m_state == TimerRunningState::STOPPED) {
-			if(m_currentPot > 2 ) {
+			if(m_currentPot > -10 ) {
 				m_currentPot--;
 				printTime();
 			} else {
@@ -63,7 +71,6 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 			m_state = TimerRunningState::STOPPED;
 		} else {
 			changeBase();
-			printBase();
 		}
 		break;
 	}
@@ -77,18 +84,21 @@ void Enlarger::changeBase() {
 	case(5): m_base++; break;
 	default: m_base = 2; break;
 	}
+	calcValues();
+	printBase();
+	printTime();
 }
 
 void Enlarger::printBase() {
 	char buf[4];
 	snprintf(buf,4,"1/%1d", m_base);
-	MyLCD::instance().printHint(buf);
+	MyLCD::instance().printHints(buf);
 }
 
 void Enlarger::printTime() {
 	char buf[11];
 	writeTime(buf, 11, m_currentPot);
-	MyLCD::instance().printValues(buf);
+	MyLCD::instance().printValue(buf);
 }
 
 void Enlarger::calcValues() {
@@ -134,5 +144,28 @@ unsigned long Enlarger::getMs(int pot) {
 }
 
 
+void Enlarger::onEnter() {
+	printMenu();
+	printTime();
+	printBase();
+}
 
+void Enlarger::onTimerUp() {
+	enlargerOff();
+	StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + 1) % NUMSTATES);
+	printTime();
+	printBase();
+	m_state = TimerRunningState::STOPPED;
+}
+
+void Enlarger::onTimerUpdate(const unsigned long remainingMs) {
+	int sec = remainingMs / 1000;
+	if(sec > 3)
+		beeper.tock();
+	else
+		beeper.tick();
+	const char timeBuffer[11];
+	snprintf(timeBuffer, 11, "       %3d", sec);
+	MyLCD::instance().printValue(timeBuffer);
+}
 

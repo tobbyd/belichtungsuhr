@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "beeper.h"
 #include "chemieClock.h"
+#include "enlarger.h"
 
 #include <LiquidCrystal.h>
 #include <RCSwitch.h>
@@ -24,14 +25,16 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 #define PINBACKLIGHT 6
 
 LightSwitch lightSwitch;
+Enlarger enlarger;
 ChemieClock devClock("Dev", 60);
 ChemieClock fixClock("Fix", 90);
 
 
 #define STATE_LIGHTSWITCH 0
-#define STATE_DEV 1
-#define STATE_FIX 2
-#define NUMSTATES 3
+#define STATE_ENLARGER 1
+#define STATE_DEV 2
+#define STATE_FIX 3
+#define NUMSTATES 4
 
 BelState *states[NUMSTATES];
 
@@ -51,13 +54,15 @@ void setup() {
   sender.setProtocol(1);
   sender.setPulseLength(302);
   lightSwitch.init(&sender);
+  enlarger.init(&sender);
   
   states[STATE_LIGHTSWITCH] = &lightSwitch;
+  states[STATE_ENLARGER] = &enlarger;
   states[STATE_DEV] = &devClock;
   states[STATE_FIX] = &fixClock;
 
   StateMachine::instance().setStates(states);
-  StateMachine::instance().setToState(STATE_DEV);
+  StateMachine::instance().setToState(STATE_LIGHTSWITCH);
 
   StateMachine::instance().execState();
   beeper.beepbeep();
