@@ -2,7 +2,7 @@
 #define _LIGHTSWITCH_H
 
 #include "statemachine.h"
-#include "RCSwitch.h"
+#include <RCSwitch.h>
 
 
 enum LightType {
@@ -12,6 +12,7 @@ enum LightType {
 };
 
 #define LIGHTCOUNT 2
+
 
 const char s1[] = "0FF0FF0FFF0F"; // Working Light / "B"
 const char s2[] = "0FF0FFF0FF0F"; // Darkroom Light / "C"
@@ -25,7 +26,7 @@ const char * const LIGHTOFFCONST[] = {s3, s4 };
 class LightSwitch : public BelState {
 public:
 	LightSwitch() { }
-	void init(int PIN);
+	void init(RCSwitch *sender);
 	~LightSwitch() { }
 
 	void onEnter();
@@ -39,7 +40,7 @@ private:
 
 	LightType m_currentMenuEntry;
 
-	RCSwitch m_sender;
+	RCSwitch *m_sender;
 	bool m_lightOn[LIGHTCOUNT];
 
 };

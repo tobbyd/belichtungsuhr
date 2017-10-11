@@ -8,6 +8,7 @@
 #include "chemieClock.h"
 
 #include <LiquidCrystal.h>
+#include <RCSwitch.h>
 
 #define PIN_JOYSTICK_X 		A1
 #define PIN_JOYSTICK_Y 		A2
@@ -36,6 +37,7 @@ BelState *states[NUMSTATES];
 
 Timer timer(states);
 Beeper beeper(PIN_BUZZER);
+RCSwitch sender;
 
 
 void setup() {
@@ -44,7 +46,11 @@ void setup() {
 
   buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET);
   Serial.begin(9600);
-  lightSwitch.init(3);
+
+  sender.enableTransmit(3);  // An Pin 3
+  sender.setProtocol(1);
+  sender.setPulseLength(302);
+  lightSwitch.init(&sender);
   
   states[STATE_LIGHTSWITCH] = &lightSwitch;
   states[STATE_DEV] = &devClock;

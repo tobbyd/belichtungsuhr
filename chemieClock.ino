@@ -49,6 +49,7 @@ void ChemieClock::onButtonClicked(const BelButton &button) {
 		break;
 	case BelButton::BUTTON_RESET:
 		m_state = TimerRunningState::STOPPED;
+		timer.pauseTimer();
 		break;
 	}
 }

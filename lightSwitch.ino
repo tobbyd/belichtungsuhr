@@ -1,15 +1,13 @@
 #include "lightSwitch.h"
 #include "myLCD.h"
+#include <RCSwitch.h>
 
-void LightSwitch::init(int PIN) 
+void LightSwitch::init(RCSwitch *sender) 
 {
 	m_lightOn[static_cast<int>(LightType::WorkingLight)] = false;
 	m_lightOn[static_cast<int>(LightType::DarkRoomLight)] = true;
 
-	m_sender.enableTransmit(3);  // An Pin 3
-
-	m_sender.setProtocol(1);
-	m_sender.setPulseLength(302);
+	m_sender = sender;
 
 	lightOff(LightType::WorkingLight);
 	lightOn(LightType::DarkRoomLight);
@@ -61,7 +59,7 @@ void LightSwitch::lightOn(const LightType &lightType) {
 	if(lightType < LIGHTCOUNT) {
 		m_lightOn[lightType] = true;
 		Serial.println(LIGHTONCONST[lightType]);
-		m_sender.sendTriState(LIGHTONCONST[lightType]);
+		m_sender->sendTriState(LIGHTONCONST[lightType]);
 	}
 }
 
@@ -69,7 +67,7 @@ void LightSwitch::lightOff(const LightType &lightType) {
 	if(lightType < LIGHTCOUNT) {
 		m_lightOn[lightType] = false;
 		Serial.println(LIGHTOFFCONST[lightType]);
-		m_sender.sendTriState(LIGHTOFFCONST[lightType]);
+		m_sender->sendTriState(LIGHTOFFCONST[lightType]);
 	}
 }
 
