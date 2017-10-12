@@ -45,7 +45,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 			MyLCD::instance().play();
 			m_state = TimerRunningState::PAUSED;
 		} else if(m_state == TimerRunningState::STOPPED) {
-			timer.startTimer(STATE_ENLARGER, getMs(m_currentPot));
+			timer.startTimer(this, getMs(m_currentPot));
 			m_lightSwitch->enlargerOn(true);
 			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;

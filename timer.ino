@@ -18,6 +18,7 @@ void Timer::startTimer(BelState *state, unsigned long millisToDo) {
 	m_timeOutMillis = refTime + millisToDo;
 	m_millisToDo = millisToDo;
 
+	Serial.println("Start timer");
 	// start backwards in 1000ms steps from timeoutMillis to now.
 	// for -5600ms overall, first tick is at -5000
 	m_nextUpdateMillis = m_timeOutMillis - 1000*((m_timeOutMillis-refTime)/1000);
@@ -41,11 +42,13 @@ void Timer::check() {
 		unsigned long refTime = millis();
 		if(refTime >= m_timeOutMillis) {
 			m_isRunning = false;
+			Serial.println("timer up");
 			// TODO: set to state? 
 			//StateMachine::instance().setToState(m_callerState);
 			//StateMachine::instance().execState();
 			m_callerState->onTimerUp();
 		} else if (refTime >= m_nextUpdateMillis) {
+			Serial.println("timer update");
 			m_nextUpdateMillis += 1000; // should not be modified after onTimerUpdate, because onTimerUpdate may set a new timer
 			m_callerState->onTimerUpdate(m_timeOutMillis - m_nextUpdateMillis + 1000);
 		}

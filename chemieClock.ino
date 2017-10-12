@@ -42,7 +42,7 @@ void ChemieClock::onButtonClicked(const BelButton &button) {
 			m_state = TimerRunningState::PAUSED;
 		} else if(m_state == TimerRunningState::STOPPED) {
 			const unsigned long lsec = m_currentSeconds;
-			timer.startTimer(STATE_DEV, lsec*1000);
+			timer.startTimer(this, lsec*1000);
 			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;
 		} else { // paused
