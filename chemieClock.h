@@ -5,8 +5,10 @@
 
 class ChemieClock : public BelState {
 public:
-	ChemieClock(const char *title, int startSeconds);
-	ChemieClock(const __FlashStringHelper* title, int startSeconds);
+	ChemieClock(const char *title);
+	ChemieClock(const __FlashStringHelper* title) ;
+
+	void init(LightSwitch *lightSwitch, int startSeconds, bool turnOnLight);
 
 	virtual void onButtonClicked(const BelButton &button);
 	virtual void onEnter();
@@ -19,6 +21,8 @@ private:
 	char *m_ctitle;
 	__FlashStringHelper *m_ftitle;
 	unsigned int m_currentSeconds;
+	bool m_turnOnLight;
+	LightSwitch *m_lightSwitch;
 	TimerRunningState m_state = TimerRunningState::STOPPED;
 };
 

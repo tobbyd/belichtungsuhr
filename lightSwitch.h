@@ -3,46 +3,27 @@
 
 #include "statemachine.h"
 #include <RCSwitch.h>
+	
+const char workingLight_On[] PROGMEM = "0FF0FF0FFF0F"; // Working Light / "B"
+const char darkRoomLight_On[] PROGMEM = "0FF0FFF0FF0F"; // Darkroom Light / "C"
+const char workingLight_Off[] PROGMEM = "0FF0FF0FFFF0";
+const char darkRoomLight_Off[] PROGMEM = "0FF0FFF0FFF0";
+const char enlarger_On[] PROGMEM = "0FF0F0FFFF0F";
+const char enlarger_Off[] PROGMEM = "0FF0F0FFFFF0";
 
-
-enum LightType {
-	WorkingLight,
-	DarkRoomLight,
-	None,
-};
-
-#define LIGHTCOUNT 2
-
-
-const char s1[] = "0FF0FF0FFF0F"; // Working Light / "B"
-const char s2[] = "0FF0FFF0FF0F"; // Darkroom Light / "C"
-const char s3[] = "0FF0FF0FFFF0";
-const char s4[] = "0FF0FFF0FFF0";
-
-const char * const LIGHTONCONST[] = {s1, s2};
-const char * const LIGHTOFFCONST[] = {s3, s4 };
-
-
-class LightSwitch : public BelState {
+class LightSwitch {
 public:
 	LightSwitch() { }
 	void init(RCSwitch *sender);
 	~LightSwitch() { }
 
-	void onEnter();
-	void onButtonClicked(const BelButton &button);
 
-	void lightOn(const LightType &menuEntry);
-	void lightOff(const LightType &menuEntry);
+	void workingLightOn(bool on);
+	void darkRoomLightOn(bool on);
+	void enlargerOn(bool on);
 
 private:
-	void printMenu();
-
-	LightType m_currentMenuEntry;
-
 	RCSwitch *m_sender;
-	bool m_lightOn[LIGHTCOUNT];
-
 };
 
 #endif // _LIGHTSWITCH_H

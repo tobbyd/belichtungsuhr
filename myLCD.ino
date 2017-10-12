@@ -74,9 +74,9 @@ void MyLCD::printHints(const __FlashStringHelper *hints) const {
 }
 
 void MyLCD::clearValue() const {
-	m_lcd->setCursor(5, 1);
-	m_lcd->print(F("          "));
-	m_lcd->setCursor(5, 1);
+	m_lcd->setCursor(4, 1);
+	m_lcd->print(F("            "));
+	m_lcd->setCursor(4, 1);
 }
 
 void MyLCD::printValue(const char *values) const {

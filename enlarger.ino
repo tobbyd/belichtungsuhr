@@ -7,17 +7,9 @@
 
 
 
-void Enlarger::init(RCSwitch *sender) {
-	m_sender = sender;
+void Enlarger::init(LightSwitch *lightSwitch) {
+	m_lightSwitch = lightSwitch;
 	calcValues();
-}
-
-void Enlarger::enlargerOn() {
-	m_sender->sendTriState(EnlargerOn);
-}
-
-void Enlarger::enlargerOff() {
-	m_sender->sendTriState(EnlargerOff);
 }
 
 void Enlarger::printMenu() {
@@ -49,17 +41,17 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 	case BelButton::BUTTON_ENTER:
 		if(m_state == TimerRunningState::RUNNING) {
 			timer.pauseTimer();
-			enlargerOff();
+			m_lightSwitch->enlargerOn(false);
 			MyLCD::instance().play();
 			m_state = TimerRunningState::PAUSED;
 		} else if(m_state == TimerRunningState::STOPPED) {
-			timer.startTimer(STATE_DEV, getMs(m_currentPot));
-			enlargerOn();
+			timer.startTimer(STATE_ENLARGER, getMs(m_currentPot));
+			m_lightSwitch->enlargerOn(true);
 			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;
 		} else { // paused
 			timer.continueTimer();
-			enlargerOn();
+			m_lightSwitch->enlargerOn(true);
 			MyLCD::instance().play();
 			m_state = TimerRunningState::RUNNING;
 		}
@@ -67,7 +59,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 	case BelButton::BUTTON_RESET:
 		if(m_state == TimerRunningState::RUNNING || m_state == TimerRunningState::PAUSED) {
 			timer.pauseTimer();
-			enlargerOff();
+			m_lightSwitch->enlargerOn(false);
 			m_state = TimerRunningState::STOPPED;
 		} else {
 			changeBase();
@@ -151,8 +143,9 @@ void Enlarger::onEnter() {
 }
 
 void Enlarger::onTimerUp() {
-	enlargerOff();
-	StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + 1) % NUMSTATES);
+	m_lightSwitch->enlargerOn(false);
+	StateMachine::instance().nextState();
+	// necessary? We switch to next state anyway...
 	printTime();
 	printBase();
 	m_state = TimerRunningState::STOPPED;

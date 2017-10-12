@@ -26,13 +26,20 @@ public:
 		return m_instance;
 	}
 
-	void setStates(BelState *states[]) {
+	void setStates(BelState *states[], int totalStateNum) {
 		m_states = states;
+		m_totalStateNum = totalStateNum;
 	}
 	
 	void setToState(int stateNum) {
 		m_stateNum = stateNum;
 		m_nextState = m_states[stateNum];
+	}
+	void prevState() {
+		setToState((getCurrentStateNum() + m_totalStateNum - 1) % m_totalStateNum);
+	}
+	void nextState() {
+		setToState((getCurrentStateNum() + 1) % m_totalStateNum);
 	}
 	void execState() {
 		if(m_currentState != m_nextState) {
@@ -50,6 +57,7 @@ private:
        		m_nextState(m_currentState) { }
 
 	int m_stateNum;
+	int m_totalStateNum;
 	BelState *m_currentState;
 	BelState *m_nextState;
 

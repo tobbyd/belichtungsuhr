@@ -7,6 +7,9 @@
 #include "beeper.h"
 #include "chemieClock.h"
 #include "enlarger.h"
+#include "focus.h"
+#include "thermometer.h"
+#include "lightSensor.h"
 
 #include <LiquidCrystal.h>
 #include <RCSwitch.h>
@@ -18,6 +21,8 @@
 
 #define PIN_BUZZER 5
 ButtonHandler buttonHandler;
+#define PIN_THERMOMETER A0
+#define PIN_LIGHTSENSOR A3
 
 //                BS  E  D4 D5  D6 D7
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
@@ -25,12 +30,17 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 #define PINBACKLIGHT 6
 
 LightSwitch lightSwitch;
+Thermometer thermometer;
+LightSensor lightSensor;
+
+Focus focus;
 Enlarger enlarger;
-ChemieClock devClock("Dev", 60);
-ChemieClock fixClock("Fix", 90);
+// title, default time, turn light on when finished
+ChemieClock devClock("Dev");
+ChemieClock fixClock("Fix");
 
 
-#define STATE_LIGHTSWITCH 0
+#define STATE_FOCUS 0
 #define STATE_ENLARGER 1
 #define STATE_DEV 2
 #define STATE_FIX 3
@@ -38,7 +48,7 @@ ChemieClock fixClock("Fix", 90);
 
 BelState *states[NUMSTATES];
 
-Timer timer(states);
+Timer timer;
 Beeper beeper(PIN_BUZZER);
 RCSwitch sender;
 
@@ -53,16 +63,22 @@ void setup() {
   sender.enableTransmit(3);  // An Pin 3
   sender.setProtocol(1);
   sender.setPulseLength(302);
-  lightSwitch.init(&sender);
-  enlarger.init(&sender);
+  thermometer.init(PIN_THERMOMETER);
+  lightSensor.init(PIN_LIGHTSENSOR);
   
-  states[STATE_LIGHTSWITCH] = &lightSwitch;
+  lightSwitch.init(&sender);
+  enlarger.init(&lightSwitch);
+  focus.init(&lightSwitch, &thermometer, &lightSensor);
+  devClock.init(&lightSwitch, 60, false);
+  fixClock.init(&lightSwitch, 90, true);
+  
+  states[STATE_FOCUS] = &focus;
   states[STATE_ENLARGER] = &enlarger;
   states[STATE_DEV] = &devClock;
   states[STATE_FIX] = &fixClock;
 
-  StateMachine::instance().setStates(states);
-  StateMachine::instance().setToState(STATE_LIGHTSWITCH);
+  StateMachine::instance().setStates(states, NUMSTATES);
+  StateMachine::instance().setToState(STATE_FOCUS);
 
   StateMachine::instance().execState();
   beeper.beepbeep();
@@ -72,9 +88,9 @@ void loop() {
 	BelButton currentButton = buttonHandler.readButton();
 
   if(currentButton == BelButton::BUTTON_UP) {
-    StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + NUMSTATES - 1) % NUMSTATES);
+    StateMachine::instance().prevState();
   } else if(currentButton == BelButton::BUTTON_DOWN) {
-    StateMachine::instance().setToState((StateMachine::instance().getCurrentStateNum() + 1) % NUMSTATES);
+    StateMachine::instance().nextState();
   } else if(currentButton != BelButton::BUTTON_NONE) {
     StateMachine::instance().getCurrentState()->onButtonClicked(currentButton); 
   }

@@ -18,10 +18,10 @@ public:
 	void play() const;
 	void printTitle(const char *title) const; // first row, max 16 chars
 	void printTitle(const __FlashStringHelper* title) const;
-	void printHints(const char *hints) const; // second row left, max 6 chars
-	void printHints(const __FlashStringHelper* hints) const; // second row left, max 6 chars
-	void printValue(const char *values) const; // second row right, max 10 chars
-	void printValue(const __FlashStringHelper* values) const; // second row right, max 10 chars
+	void printHints(const char *hints) const; // second row left, max 4 chars
+	void printHints(const __FlashStringHelper* hints) const; // second row left, max 4 chars
+	void printValue(const char *values) const; // second row right, max 12 chars
+	void printValue(const __FlashStringHelper* values) const; // second row right, max 12 chars
 	void darkMode(const bool on) const;
 private:
 

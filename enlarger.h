@@ -1,24 +1,22 @@
 #ifndef _ENLARGER_H
 #define _ENLARGER_H
 
-const char EnlargerOn[] PROGMEM = "0FF0F0FFFF0F";
-const char EnlargerOff[] PROGMEM = "0FF0F0FFFFF0";
+#include "timer.h"
+
+class LightSwitch;
 
 class Enlarger : public BelState {
 public:
 	Enlarger() { }
-	void init(RCSwitch *sender);
+	void init(LightSwitch *lightSwitch);
 
 	void onEnter();
 	void onButtonClicked(const BelButton &button);
 	virtual void onTimerUp();
 	virtual void onTimerUpdate(const unsigned long remainingMs);
 
-	void enlargerOn();
-	void enlargerOff();
-	void changeBase();
-
 private:
+	void changeBase();
 	void printMenu();
 	void printTime();
 	void printBase();
@@ -33,7 +31,7 @@ private:
 	float m_posMs[31];
 	float m_negMs[11];
 
-	RCSwitch *m_sender;
+	LightSwitch *m_lightSwitch = nullptr;
 	TimerRunningState m_state = TimerRunningState::STOPPED;
 
 };

@@ -1,16 +1,20 @@
 
 #include "chemieClock.h"
 
-ChemieClock::ChemieClock(const char *title, int currentSeconds): 
+ChemieClock::ChemieClock(const char *title): 
 	m_ctitle(title),
-	m_ftitle(nullptr),
-	m_currentSeconds(currentSeconds) {
+	m_ftitle(nullptr) {
 }
 
-ChemieClock::ChemieClock(const __FlashStringHelper* title, int currentSeconds):
+ChemieClock::ChemieClock(const __FlashStringHelper* title):
 	m_ctitle(nullptr),
-	m_ftitle(title),
-	m_currentSeconds(currentSeconds) {
+	m_ftitle(title) {
+}
+
+void ChemieClock::init(LightSwitch *lightSwitch, int currentSeconds, bool turnOnLight) {
+	m_lightSwitch = lightSwitch;
+	m_currentSeconds = currentSeconds;
+	m_turnOnLight = turnOnLight;
 }
 
 void ChemieClock::onButtonClicked(const BelButton &button) {
