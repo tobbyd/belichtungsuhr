@@ -1,4 +1,5 @@
 #include "focus.h"
+#include "limits.h"
 
 
 void Focus::init(LightSwitch *lightSwitch, Thermometer *thermometer, LightSensor *lightSensor) {
@@ -28,8 +29,7 @@ void Focus::setFocus(bool doFocus) {
 	m_lightSwitch->enlargerOn(doFocus);
 
 	if(doFocus) {
-		// to infinity!
-		timer.startTimer(this, -1);
+		timer.startTimer(this);
 	} else {
 		timer.pauseTimer();
 	}
@@ -48,7 +48,15 @@ void Focus::printSensorValues() {
 	int lightValue = m_lightSensor->getLight();
 
 	char buffer[13];
-	snprintf(buffer,13, "%2.1f°C L%4d", temperature, lightValue);
+
+	const int is = round(temperature*10);
+	const int precomma = is / 10;
+	const int postcomma = is % 10;
+	
+	snprintf(buffer, 13, "%2d,%1d C %4dL", precomma, postcomma, lightValue);
+
+
+	MyLCD::instance().printValue(buffer);
 }
 
 void Focus::onEnter() {
@@ -61,6 +69,7 @@ void Focus::onEnter() {
 void Focus::printMenu() {
 	printTitle();
 	printSensorValues();
+	MyLCD::instance().printHints("");
 }
 
 

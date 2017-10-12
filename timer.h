@@ -14,6 +14,8 @@ class Timer {
 public:
 	Timer();
 	void startTimer(BelState *state, unsigned long millisToDo);
+	// run until paused or reset
+	void startTimer(BelState *state);
 	unsigned long pauseTimer();
 	void continueTimer();
 	void check();

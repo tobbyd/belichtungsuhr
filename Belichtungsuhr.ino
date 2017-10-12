@@ -58,7 +58,7 @@ void setup() {
   MyLCD::instance().printTitle(F("start Clock..."));
 
   buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET);
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   sender.enableTransmit(3);  // An Pin 3
   sender.setProtocol(1);

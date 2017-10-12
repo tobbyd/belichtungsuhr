@@ -52,7 +52,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 		} else { // paused
 			timer.continueTimer();
 			m_lightSwitch->enlargerOn(true);
-			MyLCD::instance().play();
+			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;
 		}
 		break;
@@ -88,8 +88,8 @@ void Enlarger::printBase() {
 }
 
 void Enlarger::printTime() {
-	char buf[11];
-	writeTime(buf, 11, m_currentPot);
+	char buf[13];
+	writeTime(buf, 13, m_currentPot);
 	MyLCD::instance().printValue(buf);
 }
 
@@ -115,7 +115,7 @@ void Enlarger::writeTime(char *buffer, int size, int pot) {
 		} else {
 			const int is = round(m_posMs[pot]/100);
 			const int precomma = is/10;
-			const int postcomma = is - precomma*10;
+			const int postcomma = is % 10;
 			
 			snprintf(buffer, size, "    %1d,%1d s ", precomma, postcomma);
 		}
@@ -157,8 +157,8 @@ void Enlarger::onTimerUpdate(const unsigned long remainingMs) {
 		beeper.tock();
 	else
 		beeper.tick();
-	const char timeBuffer[11];
-	snprintf(timeBuffer, 11, "       %3d", sec);
+	const char timeBuffer[13];
+	snprintf(timeBuffer, 13, "       %3d", sec);
 	MyLCD::instance().printValue(timeBuffer);
 }
 

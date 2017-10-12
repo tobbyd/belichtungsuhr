@@ -1,10 +1,6 @@
 #include "thermometer.h"
 
 float Thermometer::getTemperature() {
-	// TODO: do real calculation
-	return 26.42;
-
-
 	float average;
 	float samples[THERMO_NUMSAMPLES];
 	int i;

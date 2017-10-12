@@ -47,13 +47,15 @@ void ChemieClock::onButtonClicked(const BelButton &button) {
 			m_state = TimerRunningState::RUNNING;
 		} else { // paused
 			timer.continueTimer();
-			MyLCD::instance().play();
+			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;
 		}
 		break;
 	case BelButton::BUTTON_RESET:
 		m_state = TimerRunningState::STOPPED;
 		timer.pauseTimer();
+		printTime();
+		MyLCD::instance().play();
 		break;
 	}
 }
@@ -89,6 +91,9 @@ void ChemieClock::onTimerUp() {
 	printTime();
 	MyLCD::instance().play();
 	m_state = TimerRunningState::STOPPED;
+	if(m_turnOnLight) {
+		m_lightSwitch->workingLightOn(true);
+	}
 }
 
 void ChemieClock::onTimerUpdate(const unsigned long remainingMs) {	

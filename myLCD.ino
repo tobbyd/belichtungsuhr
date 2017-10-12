@@ -48,7 +48,7 @@ void MyLCD::printTitle(const __FlashStringHelper* title) const {
 
 void MyLCD::clearHints() const {
 	m_lcd->setCursor(0, 1);
-	m_lcd->print(F("    "));
+	m_lcd->print(F("   "));
 	m_lcd->setCursor(0, 1);
 }
 
