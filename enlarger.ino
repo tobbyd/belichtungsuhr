@@ -45,8 +45,8 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 			MyLCD::instance().play();
 			m_state = TimerRunningState::PAUSED;
 		} else if(m_state == TimerRunningState::STOPPED) {
-			timer.startTimer(this, getMs(m_currentPot));
-			m_lightSwitch->enlargerOn(true);
+			m_countDown = 4;
+			timer.startTimer(this, (m_countDown)*1000); // last update is not sent
 			MyLCD::instance().pause();
 			m_state = TimerRunningState::RUNNING;
 		} else { // paused
@@ -143,22 +143,36 @@ void Enlarger::onEnter() {
 }
 
 void Enlarger::onTimerUp() {
-	m_lightSwitch->enlargerOn(false);
-	StateMachine::instance().nextState();
-	// necessary? We switch to next state anyway...
-	printTime();
-	printBase();
-	m_state = TimerRunningState::STOPPED;
+	if(m_countDown == 1) { // stops at 1, because 0 is here
+		m_countDown = 0;
+		timer.startTimer(this, getMs(m_currentPot)); // start actual timer after countdown
+		m_lightSwitch->enlargerOn(true);
+	} else {
+		m_lightSwitch->enlargerOn(false);
+		StateMachine::instance().nextState();
+		// necessary? We switch to next state anyway...
+		printTime();
+		printBase();
+		m_state = TimerRunningState::STOPPED;
+	}
 }
 
 void Enlarger::onTimerUpdate(const unsigned long remainingMs) {
-	int sec = remainingMs / 1000;
-	if(sec > 3)
-		beeper.tock();
-	else
+	if(m_countDown > 1) {
+		m_countDown--;
 		beeper.tick();
-	const char timeBuffer[13];
-	snprintf(timeBuffer, 13, "       %3d", sec);
-	MyLCD::instance().printValue(timeBuffer);
+		const char timeBuffer[13];
+		snprintf(timeBuffer, 13, "       %3d", m_countDown);
+		MyLCD::instance().printValue(timeBuffer);
+	} else {
+		int sec = remainingMs / 1000;
+		if(sec > 3)
+			beeper.tock();
+		else
+			beeper.tick();
+		const char timeBuffer[13];
+		snprintf(timeBuffer, 13, "       %3d", sec);
+		MyLCD::instance().printValue(timeBuffer);
+	}
 }
 

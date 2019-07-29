@@ -13,7 +13,9 @@ void LightSwitch::init(RCSwitch *sender)
 void LightSwitch::workingLightOn(bool on) {
 	if(on) {
 		m_sender->sendTriState(workingLight_On);
+		MyLCD::instance().darkMode(false);
 	} else {
+		MyLCD::instance().darkMode(true);
 		m_sender->sendTriState(workingLight_Off);
 	}
 }

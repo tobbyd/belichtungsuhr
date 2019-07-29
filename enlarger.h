@@ -27,6 +27,7 @@ private:
 
 	int m_currentPot = 10;
 	int m_base = 3;
+	int m_countDown ;
 
 	float m_posMs[31];
 	float m_negMs[11];

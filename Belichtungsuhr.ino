@@ -54,6 +54,8 @@ RCSwitch sender;
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
   MyLCD::instance().init(&lcd, PINBACKLIGHT);
   MyLCD::instance().printTitle(F("start Clock..."));
 

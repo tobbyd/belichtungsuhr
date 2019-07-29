@@ -28,9 +28,9 @@ void Timer::startTimer(BelState *state, unsigned long millisToDo) {
 	unsigned long refTime = millis();
 	m_timeOutMillis = refTime + millisToDo;
 	m_millisToDo = millisToDo;
-	// start backwards in 1000ms steps from timeoutMillis to now.
+	// start backwards in 1000ms steps from timeoutMillis to now, earliest one second after reftime
 	// for -5600ms overall, first tick is at -5000
-	m_nextUpdateMillis = m_timeOutMillis - 1000*((m_timeOutMillis-refTime)/1000);
+	m_nextUpdateMillis = m_timeOutMillis - 1000*(((m_timeOutMillis-refTime)/1000) -1);
 	m_isRunning = true;
 
 }
