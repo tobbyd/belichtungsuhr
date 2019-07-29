@@ -3,7 +3,7 @@
 #include "myLCD.h"
 
 
-void MyLCD::init(const LiquidCrystal *lcd, const int backlightPIN) {
+void MyLCD::init(LiquidCrystal *lcd, const int backlightPIN) {
 	m_lcd = lcd;
 	m_backlightPIN = backlightPIN;
 	byte play[8] = {
@@ -96,4 +96,3 @@ void MyLCD::darkMode(const bool on) const {
 		analogWrite(m_backlightPIN, DARKMODE_OFF_VALUE);
 	}
 }
-

@@ -13,7 +13,7 @@ public:
 		return m_instance;
 	}
 
-	void init(const LiquidCrystal *lcd, const int backlightPIN);
+	void init(LiquidCrystal *lcd, const int backlightPIN);
 	void pause() const;
 	void play() const;
 	void printTitle(const char *title) const; // first row, max 16 chars
@@ -37,4 +37,3 @@ private:
 
 
 #endif // __MY_LCD_H
-

@@ -6,7 +6,7 @@ Timer::Timer():
 	m_timeOutMillis(static_cast<unsigned long>(-1)),
 	m_millisToDo(static_cast<unsigned long>(-1)),
 	m_nextUpdateMillis(static_cast<unsigned long>(-1)),
-	m_callerState(-1),
+	m_callerState(nullptr),
 	m_isRunning(false)
 {
 
@@ -61,4 +61,3 @@ void Timer::check() {
 		}
 	}
 }
-

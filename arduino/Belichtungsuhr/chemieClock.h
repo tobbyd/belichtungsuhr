@@ -18,8 +18,8 @@ public:
 	virtual void onTimerUpdate(const unsigned long remainingMs);
 
 private:
-	char *m_ctitle;
-	__FlashStringHelper *m_ftitle;
+	const char *m_ctitle;
+	const __FlashStringHelper *m_ftitle;
 	unsigned int m_currentSeconds;
 	bool m_turnOnLight;
 	LightSwitch *m_lightSwitch;
@@ -28,4 +28,3 @@ private:
 
 
 #endif // _CHEMIE_CLOCK_H
-

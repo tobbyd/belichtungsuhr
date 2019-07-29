@@ -25,12 +25,12 @@ enum class JoyStickState {
 class ButtonHandler {
 public:
 	ButtonHandler() { }
-	init(int PIN_Joystick_X, int PIN_Joystick_y, int PIN_Joystick_Enter, int PIN_Reset);
+	void init(int PIN_Joystick_X, int PIN_Joystick_y, int PIN_Joystick_Enter, int PIN_Reset);
 	BelButton readButton();
 
 private:
-	void ButtonHandler::checkTaster(BelButton &result, const int PIN, int &lastValue, BelButton buttonToSet);
-	void ButtonHandler::checkJoystick(BelButton &result, const int PIN, JoyStickState &lastValue, BelButton buttonToSetLow, BelButton buttonToSetHigh);
+	void checkTaster(BelButton &result, const int PIN, int &lastValue, BelButton buttonToSet);
+	void checkJoystick(BelButton &result, const int PIN, JoyStickState &lastValue, BelButton buttonToSetLow, BelButton buttonToSetHigh);
 
 	int m_PIN_Joystick_X; 
 	int m_PIN_Joystick_Y; 
@@ -47,4 +47,3 @@ private:
 
 
 #endif // _BELBUTTON_H
-

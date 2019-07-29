@@ -1,6 +1,6 @@
 #include "belbutton.h"
 
-ButtonHandler::init(const int PIN_Joystick_X, const int PIN_Joystick_Y, const int PIN_Joystick_Enter, const int PIN_Reset)
+void ButtonHandler::init(const int PIN_Joystick_X, const int PIN_Joystick_Y, const int PIN_Joystick_Enter, const int PIN_Reset)
 {
 	m_PIN_Joystick_X = PIN_Joystick_X; 
 	m_PIN_Joystick_Y = PIN_Joystick_Y; 
@@ -59,5 +59,3 @@ BelButton ButtonHandler::readButton() {
 
 	return result;
 }
-
-

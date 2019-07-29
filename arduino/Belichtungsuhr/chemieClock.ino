@@ -76,7 +76,7 @@ void ChemieClock::printMenu() {
 }
 
 void ChemieClock::printTime() {
-	const char timeBuffer[11];
+	char timeBuffer[11];
 	snprintf(timeBuffer, 11, "    %3d:%02d", (m_currentSeconds/60), (m_currentSeconds % 60));
 	MyLCD::instance().printValue(timeBuffer);
 }
@@ -102,8 +102,7 @@ void ChemieClock::onTimerUpdate(const unsigned long remainingMs) {
 		beeper.tock();
 	else
 		beeper.tick();
-	const char timeBuffer[11];
+	char timeBuffer[11];
 	snprintf(timeBuffer, 11, "       %3d", sec);
 	MyLCD::instance().printValue(timeBuffer);
 }
-

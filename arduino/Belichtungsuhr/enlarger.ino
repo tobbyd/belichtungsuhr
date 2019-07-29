@@ -161,7 +161,7 @@ void Enlarger::onTimerUpdate(const unsigned long remainingMs) {
 	if(m_countDown > 1) {
 		m_countDown--;
 		beeper.tick();
-		const char timeBuffer[13];
+		char timeBuffer[13];
 		snprintf(timeBuffer, 13, "       %3d", m_countDown);
 		MyLCD::instance().printValue(timeBuffer);
 	} else {
@@ -170,9 +170,8 @@ void Enlarger::onTimerUpdate(const unsigned long remainingMs) {
 			beeper.tock();
 		else
 			beeper.tick();
-		const char timeBuffer[13];
+		char timeBuffer[13];
 		snprintf(timeBuffer, 13, "       %3d", sec);
 		MyLCD::instance().printValue(timeBuffer);
 	}
 }
-
