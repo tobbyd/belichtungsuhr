@@ -8,8 +8,6 @@
 #include "chemieClock.h"
 #include "enlarger.h"
 #include "focus.h"
-#include "thermometer.h"
-#include "lightSensor.h"
 
 #include <LiquidCrystal.h>
 #include <RCSwitch.h>
@@ -21,8 +19,6 @@
 
 #define PIN_BUZZER 5
 ButtonHandler buttonHandler;
-#define PIN_THERMOMETER A0
-#define PIN_LIGHTSENSOR A3
 
 //                BS  E  D4 D5  D6 D7
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
@@ -30,8 +26,6 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 #define PINBACKLIGHT 6
 
 LightSwitch lightSwitch;
-Thermometer thermometer;
-LightSensor lightSensor;
 
 Focus focus;
 Enlarger enlarger;
@@ -65,14 +59,12 @@ void setup() {
   sender.enableTransmit(3);  // An Pin 3
   sender.setProtocol(1);
   sender.setPulseLength(302);
-  thermometer.init(PIN_THERMOMETER);
-  lightSensor.init(PIN_LIGHTSENSOR);
   
   lightSwitch.init(&sender);
   enlarger.init(&lightSwitch);
-  focus.init(&lightSwitch, &thermometer, &lightSensor);
-  devClock.init(&lightSwitch, 60, false);
-  fixClock.init(&lightSwitch, 90, true);
+  focus.init(&lightSwitch);
+  devClock.init(&lightSwitch, 90, false);
+  fixClock.init(&lightSwitch, 60, true);
   
   states[STATE_FOCUS] = &focus;
   states[STATE_ENLARGER] = &enlarger;
@@ -100,4 +92,3 @@ void loop() {
   timer.check();
   
 }
-

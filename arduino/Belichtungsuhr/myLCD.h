@@ -23,11 +23,12 @@ public:
 	void printValue(const char *values) const; // second row right, max 12 chars
 	void printValue(const __FlashStringHelper* values) const; // second row right, max 12 chars
 	void darkMode(const bool on) const;
+ 
+  void clearTitle()const;
+  void clearHints()const;
+  void clearValue()const;
 private:
 
-	void clearTitle()const;
-	void clearHints()const;
-	void clearValue()const;
 
 	MyLCD () { }
 
