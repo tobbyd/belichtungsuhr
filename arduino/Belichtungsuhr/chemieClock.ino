@@ -21,6 +21,7 @@ void ChemieClock::onButtonClicked(const BelButton &button) {
 	switch(button) {
 	case BelButton::BUTTON_INC:
 		if(m_state == TimerRunningState::STOPPED) {
+      beeper.inc();
 			m_currentSeconds += 30;
 			printTime();
 		}
@@ -28,6 +29,7 @@ void ChemieClock::onButtonClicked(const BelButton &button) {
 	case BelButton::BUTTON_DEC:
 		if(m_state == TimerRunningState::STOPPED) {
 			if(m_currentSeconds > 30) {
+        beeper.dec();
 				m_currentSeconds -= 30;
 				printTime();
 			} else {

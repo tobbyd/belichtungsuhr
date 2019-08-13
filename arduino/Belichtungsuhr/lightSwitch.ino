@@ -10,7 +10,7 @@ void LightSwitch::init(RCSwitch *sender)
 	darkRoomLightOn(true);
 }
 
-void LightSwitch::workingLightOn(bool on) {
+void LightSwitch::workingLightOn(const bool on) const {
 	if(on) {
 		m_sender->sendTriState(workingLight_On);
 		MyLCD::instance().darkMode(false);
@@ -21,7 +21,7 @@ void LightSwitch::workingLightOn(bool on) {
 }
 
 
-void LightSwitch::darkRoomLightOn(bool on) {
+void LightSwitch::darkRoomLightOn(const bool on) const {
 	if(on) {
 		m_sender->sendTriState(darkRoomLight_On);
 	} else {
@@ -29,15 +29,10 @@ void LightSwitch::darkRoomLightOn(bool on) {
 	}
 }
 
-void LightSwitch::enlargerOn(bool on) {
+void LightSwitch::enlargerOn(const bool on) const {
 	if(on) {
 		m_sender->sendTriState(enlarger_On);
 	} else {
 		m_sender->sendTriState(enlarger_Off);
 	}
 }
-
-
-
-
-

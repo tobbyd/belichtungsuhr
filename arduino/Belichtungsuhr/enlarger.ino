@@ -21,6 +21,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 	case BelButton::BUTTON_INC:
 		if(m_state == TimerRunningState::STOPPED) {
 			if(m_currentPot < 30) {
+        beeper.inc();
 				m_currentPot++;
 				printTime();
 			} else {
@@ -31,6 +32,7 @@ void Enlarger::onButtonClicked(const BelButton &button) {
 	case BelButton::BUTTON_DEC:
 		if(m_state == TimerRunningState::STOPPED) {
 			if(m_currentPot > -10 ) {
+        beeper.inc();
 				m_currentPot--;
 				printTime();
 			} else {

@@ -18,9 +18,9 @@ public:
 	~LightSwitch() { }
 
 
-	void workingLightOn(bool on);
-	void darkRoomLightOn(bool on);
-	void enlargerOn(bool on);
+	void workingLightOn(const bool on) const;
+	void darkRoomLightOn(const bool on) const;
+	void enlargerOn(const bool on) const;
 
 private:
 	RCSwitch *m_sender;

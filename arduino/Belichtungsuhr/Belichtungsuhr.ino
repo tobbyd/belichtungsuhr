@@ -1,4 +1,3 @@
-
 #include "statemachine.h"
 #include "belbutton.h"
 #include "lightSwitch.h"
@@ -12,10 +11,18 @@
 #include <LiquidCrystal.h>
 #include <RCSwitch.h>
 
+// change to IR_USE_TIMER1 for using irremote together with tone()!: 
+//  #define IR_USE_TIMER1   // tx = pin 9
+//  //#define IR_USE_TIMER2     // tx = pin 3 // default
+#include <IRremote.h>
+
 #define PIN_JOYSTICK_X 		A1
 #define PIN_JOYSTICK_Y 		A2
-#define PIN_JOYSTICK_ENTER 	2
+#define PIN_JOYSTICK_ENTER 	1
 #define PIN_RESET 		4
+
+// must be an interrupt PIN: 2 or 3
+#define PIN_IR_INTERRUPT 2
 
 #define PIN_BUZZER 5
 ButtonHandler buttonHandler;
@@ -45,7 +52,7 @@ BelState *states[NUMSTATES];
 Timer timer;
 Beeper beeper(PIN_BUZZER);
 RCSwitch sender;
-
+IRrecv irrecv(PIN_IR_INTERRUPT);
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -53,7 +60,7 @@ void setup() {
   MyLCD::instance().init(&lcd, PINBACKLIGHT);
   MyLCD::instance().printTitle(F("start Clock..."));
 
-  buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET);
+  buttonHandler.init(PIN_JOYSTICK_X, PIN_JOYSTICK_Y, PIN_JOYSTICK_ENTER, PIN_RESET, PIN_IR_INTERRUPT);
   //Serial.begin(9600);
 
   sender.enableTransmit(3);  // An Pin 3
@@ -74,8 +81,8 @@ void setup() {
   StateMachine::instance().setStates(states, NUMSTATES);
   StateMachine::instance().setToState(STATE_FOCUS);
 
-  StateMachine::instance().execState();
   beeper.beepbeep();
+  StateMachine::instance().execState();
 }
 
 void loop() { 
@@ -86,7 +93,7 @@ void loop() {
   } else if(currentButton == BelButton::BUTTON_DOWN) {
     StateMachine::instance().nextState();
   } else if(currentButton != BelButton::BUTTON_NONE) {
-    StateMachine::instance().getCurrentState()->onButtonClicked(currentButton); 
+    StateMachine::instance().getCurrentState()->onButtonClicked(currentButton);
   }
   StateMachine::instance().execState();
   timer.check();

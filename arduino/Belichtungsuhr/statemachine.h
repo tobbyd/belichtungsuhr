@@ -26,31 +26,15 @@ public:
 		return m_instance;
 	}
 
-	void setStates(BelState *states[], int totalStateNum) {
-		m_states = states;
-		m_totalStateNum = totalStateNum;
-	}
+	void setStates(BelState *states[], int totalStateNum);
 	
-	void setToState(int stateNum) {
-		m_stateNum = stateNum;
-		m_nextState = m_states[stateNum];
-	}
-	void prevState() {
-		setToState((getCurrentStateNum() + m_totalStateNum - 1) % m_totalStateNum);
-	}
-	void nextState() {
-		setToState((getCurrentStateNum() + 1) % m_totalStateNum);
-	}
-	void execState() {
-		if(m_currentState != m_nextState) {
-			m_currentState->onExit();
-			m_currentState = m_nextState;
-			m_currentState->onEnter();
-		}
-	}
+	void setToState(int stateNum);
+	void prevState();
+	void nextState();
+	void execState();
 
-	BelState *getCurrentState() { return m_currentState; }
-	int getCurrentStateNum() { return m_stateNum; }
+	BelState *getCurrentState();
+	int getCurrentStateNum();
 private:
 	StateMachine() : 
 		m_currentState(new DummyState()),
@@ -69,4 +53,3 @@ private:
 
 
 #endif // _STATEMACHINE_H
-

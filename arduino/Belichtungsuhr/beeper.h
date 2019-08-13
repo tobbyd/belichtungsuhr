@@ -5,18 +5,20 @@ class Beeper {
 public:
 	Beeper(const int PIN);
 
+  void beep() const ;
+  void beepbeep() const ;
+  void buzz() const ;
+  void dec() const ;
+  void next() const;
+  void inc() const ;
+  void prev() const;
+  void state(int i) const;
+  void tick() const ;
 	void timerUp() const ;
-	void tick() const ;
 	void tock() const ;
-	void plus() const ;
-	void minus() const ;
-	void buzz() const ;
-	void beep() const ;
-	void beepbeep() const ;
 
 private:
 	int m_PIN;
 };
 
 #endif // _BEEPER_H
-
