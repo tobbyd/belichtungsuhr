@@ -37,7 +37,8 @@ void Focus::printTitle() {
 
 
 void Focus::onEnter() {
-	m_lightSwitch->workingLightOn(false);
+// do not change workingLight. This is done either at focus on/off, or by chemieclock (working light on, when finished)
+//	m_lightSwitch->workingLightOn(false);
 	m_lightSwitch->darkRoomLightOn(true);
 	m_lightSwitch->enlargerOn(false);
 	printMenu();
