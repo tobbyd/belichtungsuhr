@@ -3,6 +3,29 @@
 
 #include <LiquidCrystal.h>
 
+
+/*
+ * PINS:
+ * VSS - GND
+ * VDD - 5V
+ * V0 - Kontrast: Poti einzelne Seite (GND / 5V)
+ * RS - PIN7
+ * RW - GND
+ * E  - PIN8
+ * D0 - 
+ * D1 - 
+ * D2 - 
+ * D3 - 
+ * D4 - PIN9
+ * D5 - PIN10
+ * D6 - PIN11
+ * D7 - PIN12
+ * A  - 5V
+ * K  - GND
+ * 
+ */
+
+
 #define DARKMODE_OFF_VALUE 31 // 0 <= x < 256
 #define DARKMODE_ON_VALUE 1 // 0 <= x < 256
 

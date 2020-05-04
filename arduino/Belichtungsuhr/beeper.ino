@@ -2,6 +2,9 @@
 #include "beeper.h"
 #include "pitches.h"
 
+// Buzzer just has to be connected to Ground 
+// and to the specified PIN to the Buzzer "+" marking
+
 
 Beeper::Beeper(const int PIN): m_PIN(PIN) {
 	pinMode(m_PIN, OUTPUT);

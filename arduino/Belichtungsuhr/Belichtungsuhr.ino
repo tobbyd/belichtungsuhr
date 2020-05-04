@@ -19,7 +19,7 @@
 #define PIN_JOYSTICK_X 		A1
 #define PIN_JOYSTICK_Y 		A2
 #define PIN_JOYSTICK_ENTER 	1
-#define PIN_RESET 		4
+#define PIN_RESET 		4 // Taster: zu GND
 
 // must be an interrupt PIN: 2 or 3
 #define PIN_IR_INTERRUPT 2
@@ -52,7 +52,7 @@ BelState *states[NUMSTATES];
 Timer timer;
 Beeper beeper(PIN_BUZZER);
 RCSwitch sender;
-IRrecv irrecv(PIN_IR_INTERRUPT);
+IRrecv irrecv(PIN_IR_INTERRUPT); // G: GND, R: 5V, Y: PIN2
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
