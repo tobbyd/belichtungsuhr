@@ -134,8 +134,8 @@ BelButton ButtonHandler::readButton() {
   (checkIR(result) || 
       checkTaster(result, m_PIN_Joystick_Enter, m_lastJoystickEnter, BelButton::BUTTON_ENTER) || 
       checkTaster(result, m_PIN_Reset, m_lastReset, BelButton::BUTTON_RESET) ||
-      checkJoystick(result, m_PIN_Joystick_X, m_lastJoystickX, BelButton::BUTTON_UP, BelButton::BUTTON_DOWN) ||
-      checkJoystick(result, m_PIN_Joystick_Y, m_lastJoystickY, BelButton::BUTTON_INC, BelButton::BUTTON_DEC));
+      checkJoystick(result, m_PIN_Joystick_X, m_lastJoystickX, BelButton::BUTTON_DOWN, BelButton::BUTTON_UP) ||
+      checkJoystick(result, m_PIN_Joystick_Y, m_lastJoystickY, BelButton::BUTTON_DEC, BelButton::BUTTON_INC));
       
 	return result;
 }

@@ -81,7 +81,8 @@ void setup() {
   StateMachine::instance().setStates(states, NUMSTATES);
   StateMachine::instance().setToState(STATE_FOCUS);
 
-  beeper.beepbeep();
+  beeper.timerUp();
+  delay(500);
   StateMachine::instance().execState();
 }
 

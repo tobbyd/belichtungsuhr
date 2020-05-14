@@ -96,6 +96,7 @@ void ChemieClock::onTimerUp() {
 	if(m_turnOnLight) {
 		m_lightSwitch->workingLightOn(true);
 	}
+  delay(250); // for tone of next state
 }
 
 void ChemieClock::onTimerUpdate(const unsigned long remainingMs) {	
